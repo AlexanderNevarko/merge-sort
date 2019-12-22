@@ -2,14 +2,15 @@ package mergesort
 
 // Mergesort is a parallel merge sort
 func Mergesort(arr []int, workers int) []int {
-	if len(arr) == 1 {
+	if len(arr) <= 1 {
 		return arr
 	}
 
 	var arr1, arr2 []int
 	mid := len(arr) / 2
+
 	if workers > 1 {
-		chanel := make(chan int, 0)
+		chanel := make(chan int)
 		numWorkers1 := workers / 2
 		go func() {
 			arr1 = Mergesort(arr[:mid], numWorkers1)
@@ -37,10 +38,10 @@ func merge(arr1, arr2 []int) []int {
 			arr2 = arr2[1:]
 		}
 	}
-	for j := 0; len(arr1) > 0; j, i = j+1, i+1 {
+	for j := 0; j < len(arr1); j, i = j+1, i+1 {
 		arr[i] = arr1[j]
 	}
-	for j := 0; len(arr2) > 0; j, i = j+1, i+1 {
+	for j := 0; j < len(arr2); j, i = j+1, i+1 {
 		arr[i] = arr2[j]
 	}
 	return arr
